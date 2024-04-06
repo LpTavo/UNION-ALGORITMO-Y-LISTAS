@@ -1,0 +1,83 @@
+import java.util.ArrayList;
+
+public class OrdenamientoLista {
+    public static void bubbleSort(ArrayList<Integer> lista) {
+        int n = lista.size();
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (lista.get(j) > lista.get(j + 1)) {
+                    int temp = lista.get(j);
+                    lista.set(j, lista.get(j + 1));
+                    lista.set(j + 1, temp);
+                }
+            }
+        }
+    }
+
+    public static ArrayList<Integer> quicksort(ArrayList<Integer> lista) {
+        if (lista.size() <= 1) {
+            return lista;
+        }
+        int pivot = lista.get(lista.size() / 2);
+        ArrayList<Integer> left = new ArrayList<>();
+        ArrayList<Integer> middle = new ArrayList<>();
+        ArrayList<Integer> right = new ArrayList<>();
+        for (int num : lista) {
+            if (num < pivot) {
+                left.add(num);
+            } else if (num == pivot) {
+                middle.add(num);
+            } else {
+                right.add(num);
+            }
+        }
+        ArrayList<Integer> sorted = new ArrayList<>();
+        sorted.addAll(quicksort(left));
+        sorted.addAll(middle);
+        sorted.addAll(quicksort(right));
+        return sorted;
+    }
+
+    public static ArrayList<Integer> mergeSort(ArrayList<Integer> lista) {
+        if (lista.size() <= 1) {
+            return lista;
+        }
+        int middle = lista.size() / 2;
+        ArrayList<Integer> left = new ArrayList<>(lista.subList(0, middle));
+        ArrayList<Integer> right = new ArrayList<>(lista.subList(middle, lista.size()));
+        return merge(mergeSort(left), mergeSort(right));
+    }
+
+    public static ArrayList<Integer> merge(ArrayList<Integer> left, ArrayList<Integer> right) {
+        ArrayList<Integer> result = new ArrayList<>();
+        while (!left.isEmpty() && !right.isEmpty()) {
+            if (left.get(0) <= right.get(0)) {
+                result.add(left.remove(0));
+            } else {
+                result.add(right.remove(0));
+            }
+        }
+        result.addAll(left);
+        result.addAll(right);
+        return result;
+    }
+
+    public static void main(String[] args) {
+        ArrayList<Integer> lista = new ArrayList<>();
+        lista.add(40);
+        lista.add(10);
+        lista.add(30);
+        lista.add(20);
+
+        System.out.println("Lista original en Java: " + lista);
+
+        bubbleSort(lista);
+        System.out.println("Lista ordenada con Bubble Sort en Java: " + lista);
+
+        ArrayList<Integer> sortedList = quicksort(new ArrayList<>(lista));
+        System.out.println("Lista ordenada con Quicksort en Java: " + sortedList);
+
+        sortedList = mergeSort(new ArrayList<>(lista));
+        System.out.println("Lista ordenada con Merge Sort en Java: " + sortedList);
+    }
+}
